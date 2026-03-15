@@ -1,5 +1,6 @@
 import type { User } from "../interface/user.interface";
 import Button from "../../../components/ui/Button";
+import UserAvatar from "../../../components/ui/UserAvatar";
 
 interface UserDetailModalProps {
   user: User | null;
@@ -28,9 +29,7 @@ const UserDetailModal = ({ user, isOpen, onClose }: UserDetailModalProps) => {
         
         <div className="p-6 space-y-4">
           <div className="flex flex-col items-center mb-6">
-            <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-2xl font-bold mb-2">
-              {user.name.charAt(0)}
-            </div>
+            <UserAvatar name={user.name} className="w-20 h-20 text-2xl mb-2" />
             <h4 className="text-xl font-bold">{user.name}</h4>
             <p className="text-zinc-500 text-sm">ID: #{user.id}</p>
           </div>

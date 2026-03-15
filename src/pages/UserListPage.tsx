@@ -5,6 +5,7 @@ import type { User } from "../features/user/interface/user.interface";
 import UserDetailModal from "../features/user/components/UserDetailModal";
 import { AppRoutes } from "../router/routes.enum";
 import Button from "../components/ui/Button";
+import UserAvatar from "../components/ui/UserAvatar";
 
 const UserListPage = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -38,9 +39,9 @@ const UserListPage = () => {
         </Link>
       </div>
 
-      {/* Desktop Table */}
       <div className="hidden md:block overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm">
         <table className="w-full text-left border-collapse">
+          
           <thead>
             <tr className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
               <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300">User</th>
@@ -49,27 +50,30 @@ const UserListPage = () => {
               <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300 text-right">Actions</th>
             </tr>
           </thead>
+          
           <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
             {MOCK_USERS.map((user) => (
               <tr key={user.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors">
+                
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                      {user.name.charAt(0)}
-                    </div>
+                    <UserAvatar name={user.name} className="w-10 h-10" />
                     <div>
                       <div className="text-sm font-bold">{user.name}</div>
                       <div className="text-xs text-zinc-500">{user.email}</div>
                     </div>
                   </div>
                 </td>
+                
                 <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                   {user.company}
                 </td>
+                
                 <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
                   {user.city}
                 </td>
-                <td className="px-6 py-4 text-right space-x-2">
+                
+                <td className="flex justify-end px-6 py-4 text-right space-x-2">
                   <Button
                     type="button"
                     onClick={() => handleShowDetails(user)}
@@ -104,14 +108,11 @@ const UserListPage = () => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
       <div className="grid md:hidden grid-cols-1 gap-4">
         {MOCK_USERS.map((user) => (
           <div key={user.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-4 shadow-sm">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-lg">
-                {user.name.charAt(0)}
-              </div>
+              <UserAvatar name={user.name} className="w-12 h-12 text-lg" />
               <div className="flex-1">
                 <div className="font-bold text-lg">{user.name}</div>
                 <div className="text-sm text-zinc-500">{user.email}</div>
