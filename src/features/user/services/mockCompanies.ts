@@ -1,8 +1,7 @@
 export const COMPANY_OPTIONS = [
-  { value: '', label: 'Selecciona una empresa' },
-  { value: 'Tech Solutions RD', label: 'Tech Solutions RD' },
-  { value: 'Innovate Check', label: 'Innovate Check' },
-  { value: 'FinTech Dominicana', label: 'FinTech Dominicana' },
-  { value: 'Global Services', label: 'Global Services' },
-  { value: 'BuildIt Corp', label: 'BuildIt Corp' },
+  { value: 1, label: 'Tech Solutions RD' },
+  { value: 2, label: 'Innovate Check' },
+  { value: 3, label: 'FinTech Dominicana' },
+  { value: 4, label: 'Global Services' },
+  { value: 5, label: 'BuildIt Corp' },
 ];

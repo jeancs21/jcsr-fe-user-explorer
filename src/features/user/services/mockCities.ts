@@ -1,8 +1,7 @@
 export const CITY_OPTIONS = [
-  { value: '', label: 'Selecciona una ciudad' },
-  { value: 'Santo Domingo', label: 'Santo Domingo' },
-  { value: 'Santiago', label: 'Santiago' },
-  { value: 'La Romana', label: 'La Romana' },
-  { value: 'Puerto Plata', label: 'Puerto Plata' },
-  { value: 'Bávaro', label: 'Bávaro' },
+  { value: 1, label: 'Santo Domingo' },
+  { value: 2, label: 'Santiago' },
+  { value: 3, label: 'La Romana' },
+  { value: 4, label: 'Puerto Plata' },
+  { value: 5, label: 'Bávaro' },
 ];
