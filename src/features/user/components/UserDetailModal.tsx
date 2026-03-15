@@ -1,6 +1,7 @@
 import type { User } from "../interface/user.interface";
 import Button from "../../../components/ui/Button";
 import UserAvatar from "../../../components/ui/UserAvatar";
+import UserInfoField from "./UserInfoField";
 
 interface UserDetailModalProps {
   user: User | null;
@@ -35,22 +36,14 @@ const UserDetailModal = ({ user, isOpen, onClose }: UserDetailModalProps) => {
           </div>
 
           <div className="grid grid-cols-1 gap-4 text-sm">
-            <div className="flex flex-col space-y-1">
-              <span className="text-zinc-500 font-medium">Email</span>
-              <span className="font-semibold">{user.email}</span>
-            </div>
-            <div className="flex flex-col space-y-1">
-              <span className="text-zinc-500 font-medium">Phone</span>
-              <span className="font-semibold">{user.phone}</span>
-            </div>
-            <div className="flex flex-col space-y-1">
-              <span className="text-zinc-500 font-medium">Company</span>
-              <span className="font-semibold">{user.company}</span>
-            </div>
-            <div className="flex flex-col space-y-1">
-              <span className="text-zinc-500 font-medium">City</span>
-              <span className="font-semibold">{user.city}</span>
-            </div>
+            {[
+              { label: "Email", value: user.email },
+              { label: "Phone", value: user.phone },
+              { label: "Company", value: user.company },
+              { label: "City", value: user.city },
+            ].map((field) => (
+              <UserInfoField key={field.label} label={field.label} value={field.value} />
+            ))}
           </div>
         </div>
 

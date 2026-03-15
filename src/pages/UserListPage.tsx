@@ -6,6 +6,14 @@ import UserDetailModal from "../features/user/components/UserDetailModal";
 import { AppRoutes } from "../router/routes.enum";
 import Button from "../components/ui/Button";
 import UserAvatar from "../components/ui/UserAvatar";
+import UserInfoField from "../features/user/components/UserInfoField";
+
+const TABLE_HEADERS = [
+  { label: "User", className: "" },
+  { label: "Company", className: "" },
+  { label: "City", className: "" },
+  { label: "Actions", className: "text-right" },
+];
 
 const UserListPage = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -44,10 +52,14 @@ const UserListPage = () => {
           
           <thead>
             <tr className="bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-800">
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300">User</th>
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300">Company</th>
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300">City</th>
-              <th className="px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300 text-right">Actions</th>
+              {TABLE_HEADERS.map((header) => (
+                <th
+                  key={header.label}
+                  className={`px-6 py-4 text-sm font-semibold text-zinc-600 dark:text-zinc-300 ${header.className}`}
+                >
+                  {header.label}
+                </th>
+              ))}
             </tr>
           </thead>
           
@@ -120,14 +132,8 @@ const UserListPage = () => {
             </div>
             
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="flex flex-col">
-                <span className="text-zinc-500 font-medium">Company</span>
-                <span className="font-semibold">{user.company}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-zinc-500 font-medium">City</span>
-                <span className="font-semibold">{user.city}</span>
-              </div>
+              <UserInfoField label="Company" value={user.company} />
+              <UserInfoField label="City" value={user.city} />
             </div>
 
             <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800 flex justify-between gap-2">
