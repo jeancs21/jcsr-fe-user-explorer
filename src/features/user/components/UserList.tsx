@@ -34,7 +34,6 @@ const UserList = ({ users }: UserListProps) => {
 
   return (
     <>
-      {/* Desktop Table */}
       <div className="hidden md:block overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -102,7 +101,6 @@ const UserList = ({ users }: UserListProps) => {
         </table>
       </div>
 
-      {/* Mobile Cards */}
       <div className="grid md:hidden grid-cols-1 gap-4">
         {users.map((user) => (
           <div key={user.id} className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 space-y-4 shadow-sm">
