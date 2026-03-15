@@ -1,4 +1,5 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import { AppRoutes } from "../../../router/routes.enum";
 
 const MainLayout = () => {
   return (
@@ -8,8 +9,16 @@ const MainLayout = () => {
           <h1 className="text-xl font-bold tracking-tight">User Explorer</h1>
           <nav>
             <ul className="flex space-x-6 text-sm font-medium">
-              <li><a href="/" className="hover:text-blue-500 transition-colors">Users</a></li>
-              <li><a href="/create-user" className="hover:text-blue-500 transition-colors">Add New</a></li>
+              <li>
+                <Link to={AppRoutes.HOME} className="hover:text-blue-500 transition-colors">
+                  Users
+                </Link>
+              </li>
+              <li>
+                <Link to={AppRoutes.CREATE_USER} className="hover:text-blue-500 transition-colors">
+                  Add New
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>

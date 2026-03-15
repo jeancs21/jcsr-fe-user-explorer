@@ -3,10 +3,11 @@ import UserListPage from "../pages/UserListPage";
 import CreateUserPage from "../pages/CreateUserPage";
 import EditUserPage from "../pages/EditUserPage";
 import MainLayout from "../components/common/layout/MainLayout";
+import { AppRoutes } from "./routes.enum";
 
 export const router = createBrowserRouter([
     {
-        path:"/",
+        path: AppRoutes.HOME,
         element: <MainLayout />,
         children: [
             {
@@ -14,11 +15,11 @@ export const router = createBrowserRouter([
                 element: <UserListPage />
             },
             {
-                path: "create-user",
+                path: AppRoutes.CREATE_USER.replace("/", ""),
                 element: <CreateUserPage />
             },
             {
-                path: "edit-user/:id",
+                path: AppRoutes.EDIT_USER.replace("/", ""),
                 element: <EditUserPage />
             }
         ]
