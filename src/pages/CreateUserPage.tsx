@@ -1,7 +1,18 @@
-const CreateUserPage = () => {
-  return (
-    <div>CreateUserPage</div>
-  )
-}
+import UserForm from '../features/user/components/UserForm';
+import type { UserFormData } from '../features/user/schemas/userFormSchema';
 
-export default CreateUserPage
+const CreateUserPage = () => {
+  
+  const handleCreateUser = (data: UserFormData) => {
+    console.log('Creando nuevo usuario:', data);
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl font-bold text-gray-300 mb-8 text-center">Crear Nuevo Usuario</h1>
+      <UserForm onSubmit={handleCreateUser} submitLabel="Crear Usuario" />
+    </div>
+  );
+};
+
+export default CreateUserPage;
