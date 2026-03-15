@@ -1,4 +1,5 @@
 import type { User } from "../interface/user.interface";
+import Button from "../../../components/ui/Button";
 
 interface UserDetailModalProps {
   user: User | null;
@@ -14,14 +15,15 @@ const UserDetailModal = ({ user, isOpen, onClose }: UserDetailModalProps) => {
       <div className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
         <div className="px-6 py-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
           <h3 className="text-lg font-semibold">User Details</h3>
-          <button
+          <Button
+            type="button"
             onClick={onClose}
             className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </button>
+          </Button>
         </div>
         
         <div className="p-6 space-y-4">
@@ -54,12 +56,13 @@ const UserDetailModal = ({ user, isOpen, onClose }: UserDetailModalProps) => {
         </div>
 
         <div className="px-6 py-4 bg-zinc-50 dark:bg-zinc-800/50 flex justify-end">
-          <button
+          <Button
+            type="button"
             onClick={onClose}
             className="px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-sm"
           >
             Close
-          </button>
+          </Button>
         </div>
       </div>
     </div>
