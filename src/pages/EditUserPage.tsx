@@ -8,8 +8,8 @@ const EditUserPage = () => {
     name: 'Juan Pérez',
     email: 'juan.perez@example.com',
     phone: '809-555-0101',
-    company: 1,
-    city: 1,
+    company: 'Tech Solutions RD',
+    city: 'Santo Domingo',
   };
 
   const handleEditUser = (data: CreateUser | UpdateUser) => {

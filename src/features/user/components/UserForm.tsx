@@ -2,12 +2,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '../../../components/ui/inputs/TextField';
-import Select from '../../../components/ui/inputs/Select';
 import Button from '../../../components/ui/Button';
 import { userFormSchema } from '../schemas/userFormSchema';
 import type { CreateUser, UpdateUser } from '../interface/user.interface';
-import { COMPANY_OPTIONS } from '../services/mockCompanies';
-import { CITY_OPTIONS } from '../services/mockCities';
 
 type UserFormData = CreateUser | UpdateUser;
 
@@ -52,18 +49,18 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, submitLabel 
         error={errors.phone?.message}
       />
 
-      <Select
+      <TextField
         label="Empresa"
+        placeholder="Ej. Tech Solutions RD"
         {...register('company')}
         error={errors.company?.message}
-        options={COMPANY_OPTIONS}
       />
 
-      <Select
+      <TextField
         label="Ciudad"
+        placeholder="Ej. Santo Domingo"
         {...register('city')}
         error={errors.city?.message}
-        options={CITY_OPTIONS}
       />
 
       <Button type="submit" className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">

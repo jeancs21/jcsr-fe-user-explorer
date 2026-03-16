@@ -11,8 +11,8 @@ export interface CreateUser {
     name: string;
     email: string;
     phone: string;
-    company: number;
-    city: number;
+    company: string;
+    city: string;
 }
 
 export interface UpdateUser extends CreateUser {
