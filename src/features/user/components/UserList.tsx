@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { User } from "../interface/user.interface";
 import UserAvatar from "../../../components/ui/UserAvatar";
 import UserInfoField from "./UserInfoField";
-import UserDetailModal from "./UserDetailModal";
 import UserActions from "./UserActions";
 import DeleteUserModal from "./DeleteUserModal";
 import { useGetUsers } from "../hooks";
+import { AppRoutes } from "../../../router/routes.enum";
 
 const TABLE_HEADERS = [
   { label: "User", className: "" },
@@ -16,19 +17,12 @@ const TABLE_HEADERS = [
 
 const UserList = () => {
   const { users, isLoading, error, refetch } = useGetUsers();
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const navigate = useNavigate();
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleShowDetails = (user: User) => {
-    setSelectedUser(user);
-    setIsDetailModalOpen(true);
-  };
-
-  const handleCloseDetailModal = () => {
-    setIsDetailModalOpen(false);
-    setSelectedUser(null);
+    navigate(AppRoutes.USER_DETAILS.replace(":id", user.id.toString()));
   };
 
   const handleDeleteClick = (user: User) => {
@@ -135,12 +129,6 @@ const UserList = () => {
           </div>
         ))}
       </div>
-
-      <UserDetailModal
-        user={selectedUser}
-        isOpen={isDetailModalOpen}
-        onClose={handleCloseDetailModal}
-      />
 
       <DeleteUserModal
         user={userToDelete}
