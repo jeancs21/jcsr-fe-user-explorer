@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import type { UpdateUser } from "../interface/user.interface";
 import { updateUser } from "../services/user.services";
 
@@ -14,9 +15,12 @@ export const useUpdateUser = () => {
     try {
       await updateUser(id, userData);
       setSuccess(true);
+      toast.success("¡Usuario actualizado exitosamente!");
       return true;
     } catch (err) {
-      setError("Error updating user. Please check your data.");
+      const errorMessage = "Error al actualizar el usuario. Por favor verifica los datos.";
+      setError(errorMessage);
+      toast.error(errorMessage);
       console.error(err);
       return false;
     } finally {

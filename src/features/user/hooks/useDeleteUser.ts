@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { deleteUser } from "../services/user.services";
 
 export const useDeleteUser = () => {
@@ -13,9 +14,12 @@ export const useDeleteUser = () => {
     try {
       await deleteUser(id);
       setSuccess(true);
+      toast.success("¡Usuario eliminado exitosamente!");
       return true;
     } catch (err) {
-      setError("Error deleting user.");
+      const errorMessage = "Error al intentar eliminar el usuario.";
+      setError(errorMessage);
+      toast.error(errorMessage);
       console.error(err);
       return false;
     } finally {

@@ -10,7 +10,7 @@ interface DeleteUserModalProps {
 }
 
 const DeleteUserModal = ({ user, isOpen, onClose, onDeleted }: DeleteUserModalProps) => {
-  const { handleDeleteUser, isDeleting, error } = useDeleteUser();
+  const { handleDeleteUser, isDeleting } = useDeleteUser();
 
   if (!isOpen || !user) return null;
 
@@ -36,12 +36,6 @@ const DeleteUserModal = ({ user, isOpen, onClose, onDeleted }: DeleteUserModalPr
           <p className="text-zinc-500 dark:text-zinc-400 text-center mb-6">
             ¿Estás seguro de que deseas eliminar al usuario <span className="font-semibold text-zinc-900 dark:text-zinc-100">"{user.name}"</span> (ID: {user.id})? Esta acción no se puede deshacer.
           </p>
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600 dark:text-red-400 text-center">
-              {error}
-            </div>
-          )}
 
           <div className="flex gap-3">
             <Button
