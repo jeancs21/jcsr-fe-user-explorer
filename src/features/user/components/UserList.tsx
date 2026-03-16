@@ -60,12 +60,8 @@ const UserList = ({ users }: UserListProps) => {
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                  {user.company}
-                </td>
-                <td className="px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                  {user.city}
-                </td>
+                <UserInfoField label="Company" value={user.company} isTableColumn />
+                <UserInfoField label="City" value={user.city} isTableColumn />
                 <td className="flex justify-end px-6 py-4 text-right space-x-2">
                   <Button
                     type="button"
