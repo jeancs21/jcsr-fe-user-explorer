@@ -4,6 +4,7 @@ import UserAvatar from "../../../components/ui/UserAvatar";
 import UserInfoField from "./UserInfoField";
 import UserDetailModal from "./UserDetailModal";
 import UserActions from "./UserActions";
+import { useGetUsers } from "../hooks";
 
 const TABLE_HEADERS = [
   { label: "User", className: "" },
@@ -12,11 +13,8 @@ const TABLE_HEADERS = [
   { label: "Actions", className: "text-right" },
 ];
 
-interface UserListProps {
-  users: User[];
-}
-
-const UserList = ({ users }: UserListProps) => {
+const UserList = () => {
+  const { users, isLoading, error } = useGetUsers();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,6 +27,30 @@ const UserList = ({ users }: UserListProps) => {
     setIsModalOpen(false);
     setSelectedUser(null);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
+        <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
+      </div>
+    );
+  }
+
+  if (users.length === 0) {
+    return (
+      <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 text-center">
+        <p className="text-zinc-500 dark:text-zinc-400">No users found.</p>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { MOCK_USERS } from "../features/user/services/mockUsers";
 import UserList from "../features/user/components/UserList";
 import { AppRoutes } from "../router/routes.enum";
 
@@ -22,7 +21,7 @@ const UserListPage = () => {
         </Link>
       </div>
 
-      <UserList users={MOCK_USERS} />
+      <UserList />
     </div>
   );
 };
