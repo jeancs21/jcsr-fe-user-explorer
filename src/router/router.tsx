@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import UserListPage from "../pages/UserListPage";
 import CreateUserPage from "../pages/CreateUserPage";
 import EditUserPage from "../pages/EditUserPage";
+import UserDetailPage from "../pages/UserDetailPage";
 import MainLayout from "../components/common/layout/MainLayout";
 import { AppRoutes } from "./routes.enum";
 
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
             {
                 path: "",
                 element: <UserListPage />
+            },
+            {
+                path: AppRoutes.USER_DETAILS.replace("/", ""),
+                element: <UserDetailPage />
             },
             {
                 path: AppRoutes.CREATE_USER.replace("/", ""),
