@@ -26,7 +26,7 @@ const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, submitLabel 
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 max-w-lg mx-auto p-6 bg-black dark:bg-zinc-900 shadow-xl rounded-xl border border-zinc-100 dark:border-zinc-800">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 max-w-lg mx-auto p-6 dark:bg-zinc-900 shadow-xl rounded-xl border border-zinc-100 dark:border-zinc-800">
       <TextField
         label="Nombre Completo"
         placeholder="Ej. Juan Pérez"
