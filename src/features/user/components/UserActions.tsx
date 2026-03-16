@@ -6,10 +6,11 @@ import { AppRoutes } from "../../../router/routes.enum";
 interface UserActionsProps {
   user: User;
   onShowDetails: (user: User) => void;
+  onDelete: (user: User) => void;
   isMobile?: boolean;
 }
 
-const UserActions = ({ user, onShowDetails, isMobile = false }: UserActionsProps) => {
+const UserActions = ({ user, onShowDetails, onDelete, isMobile = false }: UserActionsProps) => {
   
   const editUrl = AppRoutes.EDIT_USER.replace(":id", user.id.toString());
 
@@ -31,6 +32,7 @@ const UserActions = ({ user, onShowDetails, isMobile = false }: UserActionsProps
         </Link>
         <Button
           type="button"
+          onClick={() => onDelete(user)}
           className="flex-1 px-3 py-2 text-red-600 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg text-sm font-medium transition-colors"
         >
           Delete
@@ -62,6 +64,7 @@ const UserActions = ({ user, onShowDetails, isMobile = false }: UserActionsProps
       </Link>
       <Button
         type="button"
+        onClick={() => onDelete(user)}
         className="p-2 text-zinc-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

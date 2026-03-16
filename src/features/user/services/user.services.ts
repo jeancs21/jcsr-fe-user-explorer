@@ -1,5 +1,5 @@
 import { usersApi } from "../api/usersApi"
-import type { CreateUser, User } from "../interface/user.interface"
+import type { CreateUser, User, UpdateUser } from "../interface/user.interface"
 
 export const getUsers = async ():Promise<User[]> => {
     const { data } = await usersApi.get<User[]>(`/users`);
@@ -14,4 +14,13 @@ export const getUserById = async (id: number): Promise<User> => {
 export const createUser = async (user: CreateUser): Promise<CreateUser> => {
     const { data } = await usersApi.post<CreateUser>(`/users`, user);
     return data;
+};
+
+export const updateUser = async (id: number, user: UpdateUser): Promise<UpdateUser> => {
+    const { data } = await usersApi.put<UpdateUser>(`/users/${id}`, user);
+    return data;
+};
+
+export const deleteUser = async (id: number): Promise<void> => {
+    await usersApi.delete(`/users/${id}`);
 };

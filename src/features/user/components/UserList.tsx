@@ -4,6 +4,7 @@ import UserAvatar from "../../../components/ui/UserAvatar";
 import UserInfoField from "./UserInfoField";
 import UserDetailModal from "./UserDetailModal";
 import UserActions from "./UserActions";
+import DeleteUserModal from "./DeleteUserModal";
 import { useGetUsers } from "../hooks";
 
 const TABLE_HEADERS = [
@@ -14,18 +15,34 @@ const TABLE_HEADERS = [
 ];
 
 const UserList = () => {
-  const { users, isLoading, error } = useGetUsers();
+  const { users, isLoading, error, refetch } = useGetUsers();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleShowDetails = (user: User) => {
     setSelectedUser(user);
-    setIsModalOpen(true);
+    setIsDetailModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseDetailModal = () => {
+    setIsDetailModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleUserDeleted = () => {
+    refetch();
   };
 
   if (isLoading) {
@@ -83,7 +100,11 @@ const UserList = () => {
                 <UserInfoField label="Company" value={user.company} isTableColumn />
                 <UserInfoField label="City" value={user.city} isTableColumn />
                 <td className="px-6 py-4 text-right">
-                  <UserActions user={user} onShowDetails={handleShowDetails} />
+                  <UserActions
+                    user={user}
+                    onShowDetails={handleShowDetails}
+                    onDelete={handleDeleteClick}
+                  />
                 </td>
               </tr>
             ))}
@@ -105,15 +126,27 @@ const UserList = () => {
               <UserInfoField label="Company" value={user.company} />
               <UserInfoField label="City" value={user.city} />
             </div>
-            <UserActions user={user} onShowDetails={handleShowDetails} isMobile />
+            <UserActions
+              user={user}
+              onShowDetails={handleShowDetails}
+              onDelete={handleDeleteClick}
+              isMobile
+            />
           </div>
         ))}
       </div>
 
       <UserDetailModal
         user={selectedUser}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isDetailModalOpen}
+        onClose={handleCloseDetailModal}
+      />
+
+      <DeleteUserModal
+        user={userToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDeleted={handleUserDeleted}
       />
     </>
   );
