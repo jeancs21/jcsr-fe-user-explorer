@@ -5,34 +5,45 @@ import UserSearchBar from "../features/user/components/UserSearchBar";
 import { useGetUsers } from "../features/user/hooks";
 import { AppRoutes } from "../router/routes.enum";
 
+type FilterType = "city" | "company" | "none";
+
 const UserListPage = () => {
   const [search, setSearch] = useState("");
+  const [filterType, setFilterType] = useState<FilterType>("none");
   const [selectedCity, setSelectedCity] = useState<string | undefined>();
   const [selectedCompany, setSelectedCompany] = useState<string | undefined>();
 
   const { users: allUsers } = useGetUsers();
 
   const cities = useMemo(() => {
-    const uniqueCities = Array.from(new Set(allUsers.map((u) => u.city))).sort();
-    return uniqueCities;
+    return Array.from(new Set(allUsers.map((u) => u.city))).sort();
   }, [allUsers]);
 
   const companies = useMemo(() => {
-    const uniqueCompanies = Array.from(new Set(allUsers.map((u) => u.company))).sort();
-    return uniqueCompanies;
+    return Array.from(new Set(allUsers.map((u) => u.company))).sort();
   }, [allUsers]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
   };
 
-  const handleCityChange = (city: string) => {
-    setSelectedCity(prev => prev === city ? undefined : city);
+  const handleFilterTypeChange = (type: FilterType) => {
+    setFilterType(type);
+    setSelectedCity(undefined);
+    setSelectedCompany(undefined);
   };
 
-  const handleCompanyChange = (company: string) => {
-    setSelectedCompany(prev => prev === company ? undefined : company);
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value || undefined;
+    if (filterType === "city") {
+      setSelectedCity(value);
+    } else if (filterType === "company") {
+      setSelectedCompany(value);
+    }
   };
+
+  const options = filterType === "city" ? cities : companies;
+  const selectedValue = filterType === "city" ? selectedCity : selectedCompany;
 
   return (
     <div className="space-y-6">
@@ -55,52 +66,65 @@ const UserListPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <aside className="lg:col-span-1 space-y-6">
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-6">
-            <div>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-4">Cities</h3>
-              <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                {cities.map(city => (
-                  <label key={city} className="flex items-center space-x-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
-                      checked={selectedCity === city}
-                      onChange={() => handleCityChange(city)}
-                    />
-                    <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
-                      {city}
-                    </span>
-                  </label>
-                ))}
-                {cities.length === 0 && <p className="text-xs text-zinc-400 italic">No cities found</p>}
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500">Filtrar por:</h3>
+              
+              <div className="flex flex-col space-y-3">
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="filterType"
+                    className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800"
+                    checked={filterType === "city"}
+                    onChange={() => handleFilterTypeChange("city")}
+                  />
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
+                    Ciudad
+                  </span>
+                </label>
+
+                <label className="flex items-center space-x-3 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="filterType"
+                    className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800"
+                    checked={filterType === "company"}
+                    onChange={() => handleFilterTypeChange("company")}
+                  />
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
+                    Empresa
+                  </span>
+                </label>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-zinc-100 dark:border-zinc-800">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500 mb-4">Companies</h3>
-              <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
-                {companies.map(company => (
-                  <label key={company} className="flex items-center space-x-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
-                      checked={selectedCompany === company}
-                      onChange={() => handleCompanyChange(company)}
-                    />
-                    <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
-                      {company}
-                    </span>
-                  </label>
-                ))}
-                {companies.length === 0 && <p className="text-xs text-zinc-400 italic">No companies found</p>}
+            {filterType !== "none" && (
+              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                <label htmlFor="filter-select" className="text-xs font-semibold text-zinc-400 block uppercase">
+                  Seleccione {filterType === "city" ? "una Ciudad" : "una Empresa"}:
+                </label>
+                <select
+                  id="filter-select"
+                  value={selectedValue || ""}
+                  onChange={handleSelectChange}
+                  className="w-full p-2 text-sm bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                >
+                  <option value="">Todos</option>
+                  {options.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
+            )}
 
-            {(selectedCity || selectedCompany) && (
+            {filterType !== "none" && (
               <button
-                onClick={() => { setSelectedCity(undefined); setSelectedCompany(undefined); }}
+                onClick={() => handleFilterTypeChange("none")}
                 className="w-full py-2 text-xs font-semibold text-zinc-500 hover:text-blue-600 transition-colors flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-blue-200"
               >
-                Clear Filters
+                Limpiar Filtros
               </button>
             )}
           </div>
