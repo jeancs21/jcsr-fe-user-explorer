@@ -1,4 +1,5 @@
 export const DR_CITIES = [
+  'Otro',
   'Santo Domingo',
   'Santiago de los Caballeros',
   'San Felipe de Puerto Plata',
@@ -9,51 +10,13 @@ export const DR_CITIES = [
   'San Cristóbal',
   'Concepción de La Vega',
   'Santa Cruz de Barahona',
-  'Baní',
-  'San Juan de la Maguana',
-  'Bajos de Haina',
-  'Bonao',
-  'Moca',
-  'Azua de Compostela',
-  'Santa Cruz de el Seibo',
-  'Santa Cruz de Mao',
-  'Cotuí',
-  'Nagua',
-  'Monte Plata',
-  'Dajabón',
-  'Santa Cruz de Jimaní',
-  'Santa Bárbara de Samaná',
-  'Sabana de la Mar',
-  'Comendador',
-  'Sabaneta',
-  'San Ignacio de Sabaneta',
-  'San Fernando de Monte Cristi',
-  'Salcedo',
-  'Neiba',
-  'Pedernales',
-  'Duvergé',
-  'Luperón',
-  'Sánchez',
-  'Villa Bisonó (Navarrete)',
-  'Villa Riva',
-  'Castillo',
-  'Pimentel',
-  'Las Terrenas',
-  'Río San Juan',
-  'Cabrera',
-  'Gaspar Hernández',
-  'Imbert',
-  'Sosúa',
-  'Cabarete',
-  'Altamira',
-  'Luperón',
-  'Esperanza',
-  'Laguna Salada',
 ] as const;
 
 export type DrCity = typeof DR_CITIES[number];
 
-export const DR_CITY_OPTIONS = DR_CITIES.map((city) => ({
-  value: city,
-  label: city,
-}));
+export const DR_CITY_OPTIONS = [
+  ...DR_CITIES.map((city) => ({
+    value: city,
+    label: city,
+  })),
+];

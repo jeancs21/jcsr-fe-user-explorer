@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import { DR_CITIES } from '../constants/drCities';
 import type { CreateUser } from '../interface/user.interface';
 
 export const userFormSchema: yup.ObjectSchema<CreateUser> = yup.object({
@@ -11,6 +10,5 @@ export const userFormSchema: yup.ObjectSchema<CreateUser> = yup.object({
     .max(15, 'El teléfono debe tener máximo 15 caracteres'),
   company: yup.string().required('La empresa es obligatoria'),
   city: yup.string()
-    .required('La ciudad es obligatoria')
-    .oneOf([...DR_CITIES], 'Selecciona una ciudad válida de la lista'),
+    .required('La ciudad es obligatoria'),
 }).required();
