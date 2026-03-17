@@ -18,3 +18,5 @@ export interface CreateUser {
 export interface UpdateUser extends CreateUser {
     id: number;
 }
+
+export type UserFilterType = "city" | "company" | "none";

@@ -15,8 +15,14 @@ const TABLE_HEADERS = [
   { label: "Actions", className: "text-right" },
 ];
 
-const UserList = () => {
-  const { users, isLoading, error, refetch } = useGetUsers();
+interface UserListProps {
+  search?: string;
+  city?: string;
+  company?: string;
+}
+
+const UserList = ({ search, city, company }: UserListProps) => {
+  const { users, isLoading, error, refetch } = useGetUsers(search, city, company);
   const navigate = useNavigate();
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -58,7 +64,9 @@ const UserList = () => {
   if (users.length === 0) {
     return (
       <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 text-center">
-        <p className="text-zinc-500 dark:text-zinc-400">No users found.</p>
+        <p className="text-zinc-500 dark:text-zinc-400">
+          {search ? `No users found matching "${search}".` : "No users found."}
+        </p>
       </div>
     );
   }
