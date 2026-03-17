@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Button from "../../../components/ui/Button";
 
 interface UserSearchBarProps {
   onSearch: (value: string) => void;
@@ -50,7 +51,7 @@ const UserSearchBar = ({
         onChange={(e) => setInputValue(e.target.value)}
       />
       {inputValue && (
-        <button
+        <Button
           type="button"
           onClick={handleClear}
           className="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -68,7 +69,7 @@ const UserSearchBar = ({
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-        </button>
+        </Button>
       )}
     </div>
   );

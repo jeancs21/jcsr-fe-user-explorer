@@ -29,9 +29,7 @@ const UserListPage = () => {
         </Link>
       </div>
 
-      <div className="flex justify-between items-center bg-white dark:bg-zinc-900/50 p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm">
-        <UserSearchBar onSearch={handleSearch} />
-      </div>
+      <UserSearchBar onSearch={handleSearch} />
 
       <UserList search={search} />
     </div>
