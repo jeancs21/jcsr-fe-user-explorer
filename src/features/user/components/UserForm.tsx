@@ -1,29 +1,40 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import type {  SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextField from '../../../components/ui/inputs/TextField';
+import SearchableSelect from '../../../components/ui/inputs/SearchableSelect';
 import Button from '../../../components/ui/Button';
 import { userFormSchema } from '../schemas/userFormSchema';
 import type { CreateUser } from '../interface/user.interface';
 import { useCreateUser } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../../router/routes.enum';
+import { DR_CITY_OPTIONS } from '../constants/drCities';
 
 interface UserFormProps {
   submitLabel?: string;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ submitLabel = 'Guardar' }) => {
+const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
   const { handleCreateUser, isSubmitting, success } = useCreateUser();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset
   } = useForm<CreateUser>({
     resolver: yupResolver(userFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      city: '',
+    }
   });
 
   useEffect(() => {
@@ -36,7 +47,7 @@ const UserForm: React.FC<UserFormProps> = ({ submitLabel = 'Guardar' }) => {
     }
   }, [success, reset, navigate]);
 
-  const onFormSubmit = async (data: CreateUser) => {
+  const onFormSubmit: SubmitHandler<CreateUser> = async (data) => {
     await handleCreateUser(data);
   };
 
@@ -79,12 +90,20 @@ const UserForm: React.FC<UserFormProps> = ({ submitLabel = 'Guardar' }) => {
         disabled={isSubmitting}
       />
 
-      <TextField
-        label="Ciudad"
-        placeholder="Ej. Santo Domingo"
-        {...register('city')}
-        error={errors.city?.message}
-        disabled={isSubmitting}
+      <Controller
+        name="city"
+        control={control}
+        render={({ field }) => (
+          <SearchableSelect
+            label="Ciudad"
+            placeholder="Selecciona una ciudad..."
+            options={DR_CITY_OPTIONS}
+            value={field.value}
+            onChange={field.onChange}
+            error={errors.city?.message}
+            disabled={isSubmitting}
+          />
+        )}
       />
 
       <Button
