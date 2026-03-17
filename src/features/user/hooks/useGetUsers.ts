@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import type { User } from "../interface/user.interface";
 import { getUsers } from "../services/user.services";
 
-export const useGetUsers = () => {
+export const useGetUsers = (search?: string) => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -11,7 +11,7 @@ export const useGetUsers = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await getUsers();
+      const data = await getUsers(search);
       setUsers(data);
     } catch (err) {
       setError("Error fetching users. Please try again.");
@@ -19,7 +19,7 @@ export const useGetUsers = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     fetchUsers();

@@ -1,8 +1,16 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import UserList from "../features/user/components/UserList";
+import UserSearchBar from "../features/user/components/UserSearchBar";
 import { AppRoutes } from "../router/routes.enum";
 
 const UserListPage = () => {
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -21,7 +29,11 @@ const UserListPage = () => {
         </Link>
       </div>
 
-      <UserList />
+      <div className="flex justify-between items-center bg-white dark:bg-zinc-900/50 p-4 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm">
+        <UserSearchBar onSearch={handleSearch} />
+      </div>
+
+      <UserList search={search} />
     </div>
   );
 };
