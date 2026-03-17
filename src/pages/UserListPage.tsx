@@ -4,6 +4,8 @@ import UserList from "../features/user/components/UserList";
 import UserSearchBar from "../features/user/components/UserSearchBar";
 import { useGetUsers } from "../features/user/hooks";
 import { AppRoutes } from "../router/routes.enum";
+import RadioButton from "../components/ui/inputs/RadioButton";
+import Select from "../components/ui/inputs/Select";
 
 type FilterType = "city" | "company" | "none";
 
@@ -42,7 +44,14 @@ const UserListPage = () => {
     }
   };
 
-  const options = filterType === "city" ? cities : companies;
+  const selectOptions = useMemo(() => {
+    const options = filterType === "city" ? cities : companies;
+    return [
+      { value: "", label: "Todos" },
+      ...options.map((opt) => ({ value: opt, label: opt })),
+    ];
+  }, [filterType, cities, companies]);
+
   const selectedValue = filterType === "city" ? selectedCity : selectedCompany;
 
   return (
@@ -70,52 +79,38 @@ const UserListPage = () => {
               <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500">Filtrar por:</h3>
               
               <div className="flex flex-col space-y-3">
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="filterType"
-                    className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800"
-                    checked={filterType === "city"}
-                    onChange={() => handleFilterTypeChange("city")}
-                  />
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
-                    Ciudad
-                  </span>
-                </label>
+                <RadioButton
+                  id="filter-city"
+                  label="Ciudad"
+                  name="filterType"
+                  value="city"
+                  checked={filterType === "city"}
+                  onChange={() => handleFilterTypeChange("city")}
+                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                />
 
-                <label className="flex items-center space-x-3 cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="filterType"
-                    className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800"
-                    checked={filterType === "company"}
-                    onChange={() => handleFilterTypeChange("company")}
-                  />
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
-                    Empresa
-                  </span>
-                </label>
+                <RadioButton
+                  id="filter-company"
+                  label="Empresa"
+                  name="filterType"
+                  value="company"
+                  checked={filterType === "company"}
+                  onChange={() => handleFilterTypeChange("company")}
+                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                />
               </div>
             </div>
 
             {filterType !== "none" && (
-              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-                <label htmlFor="filter-select" className="text-xs font-semibold text-zinc-400 block uppercase">
-                  Seleccione {filterType === "city" ? "una Ciudad" : "una Empresa"}:
-                </label>
-                <select
+              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2 duration-300">
+                <Select
                   id="filter-select"
+                  label={`Seleccione ${filterType === "city" ? "una Ciudad" : "una Empresa"}:`}
                   value={selectedValue || ""}
                   onChange={handleSelectChange}
-                  className="w-full p-2 text-sm bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                >
-                  <option value="">Todos</option>
-                  {options.map(option => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                  options={selectOptions}
+                  className="text-sm bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
+                />
               </div>
             )}
 
