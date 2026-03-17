@@ -14,7 +14,7 @@ export const useGetUserById = (id: number | null) => {
       const data = await getUserById(userId);
       setUser(data);
     } catch (err) {
-      setError("Error fetching user details.");
+      setError("Error al obtener los datos del usuario.");
       console.error(err);
     } finally {
       setIsLoading(false);

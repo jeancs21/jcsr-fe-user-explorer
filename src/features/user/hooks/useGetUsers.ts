@@ -14,7 +14,7 @@ export const useGetUsers = (search?: string, city?: string, company?: string) =>
       const data = await getUsers(search, city, company);
       setUsers(data);
     } catch (err) {
-      setError("Error fetching users. Please try again.");
+      setError("Error al obtener los usuarios. Por favor, intente más tarde.");
       console.error(err);
     } finally {
       setIsLoading(false);
