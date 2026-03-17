@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { normalizeString } from '../../../utils/stringUtils';
 
 interface Option {
   value: string;
@@ -15,7 +16,7 @@ interface SearchableSelectProps {
   disabled?: boolean;
 }
 
-const SearchableSelect: React.FC<SearchableSelectProps> = ({
+const SearchableSelect = ({
   label,
   options,
   value,
@@ -23,81 +24,123 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   error,
   placeholder,
   disabled
-}) => {
+}: SearchableSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isOtherMode, setIsOtherMode] = useState(false);
   const [prevValue, setPrevValue] = useState(value);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Sync search term with value if prop changes from outside
   if (value !== prevValue) {
     setPrevValue(value);
     const selected = options.find(opt => opt.value === value);
-    setSearchTerm(selected ? selected.label : '');
+    if (selected) {
+      if (selected.value === 'other') {
+        setIsOtherMode(true);
+        setSearchTerm('');
+      } else {
+        setIsOtherMode(false);
+        setSearchTerm(selected.label);
+      }
+    } else {
+      if (value) {
+        setIsOtherMode(true);
+        setSearchTerm(value);
+      } else {
+        setIsOtherMode(false);
+        setSearchTerm('');
+      }
+    }
   }
-
-  const normalizeString = (str: string) => {
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase();
-  };
 
   const filteredOptions = options
     .filter(option =>
-      normalizeString(option.label).includes(normalizeString(searchTerm))
+      normalizeString(option.label).includes(normalizeString(searchTerm)) ||
+      option.value === 'other'
     )
-    .slice(0, 10); // Limit to 10 options as requested
+    .slice(0, 11);
 
   const handleSelect = (option: Option) => {
-    onChange(option.value);
-    setSearchTerm(option.label);
-    setIsOpen(false);
+    if (option.value === 'other') {
+      setIsOtherMode(true);
+      setSearchTerm('');
+      onChange('');
+      setIsOpen(false);
+    } else {
+      setIsOtherMode(false);
+      onChange(option.value);
+      setSearchTerm(option.label);
+      setIsOpen(false);
+    }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
       setIsOpen(false);
-      // Reset search term if no valid option was selected
-      const selected = options.find(opt => opt.value === value);
-      setSearchTerm(selected ? selected.label : '');
+      if (!isOtherMode) {
+        const selected = options.find(opt => opt.value === value);
+        setSearchTerm(selected ? selected.label : '');
+      }
     }
   };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [value]);
+  }, [value, isOtherMode]);
 
   return (
     <div className="flex flex-col gap-2 w-full relative" ref={containerRef}>
-      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-        {label}
-      </label>
+      <div className="flex justify-between items-center">
+        <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          {label}
+        </label>
+        {isOtherMode && (
+          <button
+            type="button"
+            onClick={() => {
+              setIsOtherMode(false);
+              onChange('');
+              setSearchTerm('');
+            }}
+            className="text-xs text-blue-600 hover:underline dark:text-blue-400"
+          >
+            Volver al listado
+          </button>
+        )}
+      </div>
       <div className="relative">
         <input
           type="text"
-          placeholder={placeholder}
+          placeholder={isOtherMode ? 'Escribe el nombre de la ciudad...' : placeholder}
           value={searchTerm}
           onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setIsOpen(true);
-            // Clear value if typing to force selection from list
-            if (e.target.value === '') onChange('');
+            const newVal = e.target.value;
+            setSearchTerm(newVal);
+            if (isOtherMode) {
+              onChange(newVal);
+            } else {
+              setIsOpen(true);
+              if (newVal === '') onChange('');
+            }
           }}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => !isOtherMode && setIsOpen(true)}
           disabled={disabled}
           className={`w-full border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:bg-zinc-800 dark:border-zinc-700 dark:text-white ${
             error ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-300'
           }`}
         />
-        {isOpen && !disabled && (
+        {isOpen && !disabled && !isOtherMode && (
           <div className="absolute z-50 w-full mt-1 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md shadow-lg max-h-60 overflow-auto">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <div
                   key={option.value}
-                  className="px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 cursor-pointer text-sm text-zinc-900 dark:text-zinc-100"
+                  className={`px-4 py-2 hover:bg-zinc-100 dark:hover:bg-zinc-700 cursor-pointer text-sm ${
+                    option.value === 'other'
+                      ? 'border-t border-zinc-100 dark:border-zinc-700 font-medium text-blue-600 dark:text-blue-400'
+                      : 'text-zinc-900 dark:text-zinc-100'
+                  }`}
                   onClick={() => handleSelect(option)}
                 >
                   {option.label}

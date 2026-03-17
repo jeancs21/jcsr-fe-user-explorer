@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import type {  SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,7 +16,7 @@ interface UserFormProps {
   submitLabel?: string;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ submitLabel = 'Guardar' }) => {
+const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
   const { handleCreateUser, isSubmitting, success } = useCreateUser();
   const navigate = useNavigate();
 
