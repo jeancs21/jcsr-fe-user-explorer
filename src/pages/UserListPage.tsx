@@ -46,8 +46,8 @@ const UserListPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
-          <p className="text-zinc-500 dark:text-zinc-400">View, manage and explore your user base.</p>
+          <h2 className="text-2xl font-bold tracking-tight">Gestor de usuarios</h2>
+          <p className="text-zinc-500 dark:text-zinc-400">Visualiza, gestiona y explora tu base de usuarios.</p>
         </div>
         <Link
           to={AppRoutes.CREATE_USER}
@@ -56,7 +56,7 @@ const UserListPage = () => {
           <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-          Add New User
+          Agregar usuario
         </Link>
       </div>
 

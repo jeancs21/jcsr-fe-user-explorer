@@ -9,7 +9,7 @@ interface UserSearchBarProps {
 
 const UserSearchBar = ({
   onSearch,
-  placeholder = "Search by name or email...",
+  placeholder = "Buscar por nombre o correo...",
   className = ""
 }: UserSearchBarProps) => {
   const [inputValue, setInputValue] = useState("");
