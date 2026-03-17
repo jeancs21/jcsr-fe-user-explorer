@@ -21,7 +21,7 @@ const UserDetailPage = () => {
     return (
       <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
         <p className="text-red-600 dark:text-red-400 font-medium mb-6">{error || "User not found"}</p>
-        <GoBackLink>Back to list</GoBackLink>
+        <GoBackLink>Volver al listado</GoBackLink>
       </div>
     );
   }
@@ -36,7 +36,7 @@ const UserDetailPage = () => {
             <p className="text-zinc-500 text-sm font-medium">User ID: #{user.id}</p>
           </div>
         </div>
-        <GoBackLink>Back to list</GoBackLink>
+        <GoBackLink>Volver al listado</GoBackLink>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
