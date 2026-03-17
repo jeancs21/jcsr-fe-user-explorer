@@ -1,9 +1,9 @@
 import { usersApi } from "../api/usersApi"
 import type { CreateUser, User, UpdateUser } from "../interface/user.interface"
 
-export const getUsers = async (search?: string):Promise<User[]> => {
+export const getUsers = async (search?: string, city?: string, company?: string):Promise<User[]> => {
     const { data } = await usersApi.get<User[]>(`/users`, {
-        params: { search }
+        params: { search, city, company }
     });
     return data;
 };

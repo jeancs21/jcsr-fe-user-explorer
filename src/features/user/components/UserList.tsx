@@ -17,10 +17,12 @@ const TABLE_HEADERS = [
 
 interface UserListProps {
   search?: string;
+  city?: string;
+  company?: string;
 }
 
-const UserList = ({ search }: UserListProps) => {
-  const { users, isLoading, error, refetch } = useGetUsers(search);
+const UserList = ({ search, city, company }: UserListProps) => {
+  const { users, isLoading, error, refetch } = useGetUsers(search, city, company);
   const navigate = useNavigate();
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
