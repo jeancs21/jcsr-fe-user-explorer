@@ -2,16 +2,15 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import UserList from "../features/user/components/UserList";
 import UserSearchBar from "../features/user/components/UserSearchBar";
+import UserFilterTypeSelector from "../features/user/components/UserFilterTypeSelector";
+import UserFilterValueSelector from "../features/user/components/UserFilterValueSelector";
 import { useGetUsers } from "../features/user/hooks";
 import { AppRoutes } from "../router/routes.enum";
-import RadioButton from "../components/ui/inputs/RadioButton";
-import Select from "../components/ui/inputs/Select";
-
-type FilterType = "city" | "company" | "none";
+import type { UserFilterType } from "../features/user/interface/user.interface";
 
 const UserListPage = () => {
   const [search, setSearch] = useState("");
-  const [filterType, setFilterType] = useState<FilterType>("none");
+  const [filterType, setFilterType] = useState<UserFilterType>("none");
   const [selectedCity, setSelectedCity] = useState<string | undefined>();
   const [selectedCompany, setSelectedCompany] = useState<string | undefined>();
 
@@ -29,30 +28,19 @@ const UserListPage = () => {
     setSearch(value);
   };
 
-  const handleFilterTypeChange = (type: FilterType) => {
+  const handleFilterTypeChange = (type: UserFilterType) => {
     setFilterType(type);
     setSelectedCity(undefined);
     setSelectedCompany(undefined);
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value || undefined;
+  const handleValueChange = (value: string | undefined) => {
     if (filterType === "city") {
       setSelectedCity(value);
     } else if (filterType === "company") {
       setSelectedCompany(value);
     }
   };
-
-  const selectOptions = useMemo(() => {
-    const options = filterType === "city" ? cities : companies;
-    return [
-      { value: "", label: "Todos" },
-      ...options.map((opt) => ({ value: opt, label: opt })),
-    ];
-  }, [filterType, cities, companies]);
-
-  const selectedValue = filterType === "city" ? selectedCity : selectedCompany;
 
   return (
     <div className="space-y-6">
@@ -73,57 +61,29 @@ const UserListPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <aside className="lg:col-span-1 space-y-6">
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-6">
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-zinc-500">Filtrar por:</h3>
-              
-              <div className="flex flex-col space-y-3">
-                <RadioButton
-                  id="filter-city"
-                  label="Ciudad"
-                  name="filterType"
-                  value="city"
-                  checked={filterType === "city"}
-                  onChange={() => handleFilterTypeChange("city")}
-                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                />
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-5 shadow-sm space-y-6">
+          <UserFilterTypeSelector
+            currentType={filterType}
+            onTypeChange={handleFilterTypeChange}
+          />
 
-                <RadioButton
-                  id="filter-company"
-                  label="Empresa"
-                  name="filterType"
-                  value="company"
-                  checked={filterType === "company"}
-                  onChange={() => handleFilterTypeChange("company")}
-                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
-                />
-              </div>
-            </div>
+          <UserFilterValueSelector
+            filterType={filterType}
+            selectedValue={filterType === "city" ? selectedCity : selectedCompany}
+            cities={cities}
+            companies={companies}
+            onValueChange={handleValueChange}
+          />
 
-            {filterType !== "none" && (
-              <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800 animate-in fade-in slide-in-from-top-2 duration-300">
-                <Select
-                  id="filter-select"
-                  label={`Seleccione ${filterType === "city" ? "una Ciudad" : "una Empresa"}:`}
-                  value={selectedValue || ""}
-                  onChange={handleSelectChange}
-                  options={selectOptions}
-                  className="text-sm bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700"
-                />
-              </div>
-            )}
-
-            {filterType !== "none" && (
-              <button
-                onClick={() => handleFilterTypeChange("none")}
-                className="w-full py-2 text-xs font-semibold text-zinc-500 hover:text-blue-600 transition-colors flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-blue-200"
-              >
-                Limpiar Filtros
-              </button>
-            )}
-          </div>
-        </aside>
+          {filterType !== "none" && (
+            <button
+              onClick={() => handleFilterTypeChange("none")}
+              className="w-full py-2 text-xs font-semibold text-zinc-500 hover:text-blue-600 transition-colors flex items-center justify-center border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-blue-200"
+            >
+              Limpiar Filtros
+            </button>
+          )}
+        </div>
 
         <div className="lg:col-span-3 space-y-6">
           <UserSearchBar onSearch={handleSearch} />
