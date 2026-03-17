@@ -7,10 +7,10 @@ import { useGetUsers } from "../hooks";
 import { AppRoutes } from "../../../router/routes.enum";
 
 const TABLE_HEADERS = [
-  { label: "User", className: "" },
-  { label: "Company", className: "" },
-  { label: "City", className: "" },
-  { label: "Actions", className: "text-right" },
+  { label: "Usuario", className: "" },
+  { label: "Empresa", className: "" },
+  { label: "Ciudad", className: "" },
+  { label: "Acciones", className: "text-right" },
 ];
 
 interface UserListProps {
@@ -81,8 +81,8 @@ const UserList = ({ search, city, company }: UserListProps) => {
                     </div>
                   </div>
                 </td>
-                <UserInfoField label="Company" value={user.company} isTableColumn />
-                <UserInfoField label="City" value={user.city} isTableColumn />
+                <UserInfoField label="Empresa" value={user.company} isTableColumn />
+                <UserInfoField label="Ciudad" value={user.city} isTableColumn />
                 <td className="px-6 py-4 text-right">
                   <UserActions
                     user={user}
@@ -106,8 +106,8 @@ const UserList = ({ search, city, company }: UserListProps) => {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 text-sm">
-              <UserInfoField label="Company" value={user.company} />
-              <UserInfoField label="City" value={user.city} />
+              <UserInfoField label="Empresa" value={user.company} />
+              <UserInfoField label="Ciudad" value={user.city} />
             </div>
             <UserActions
               user={user}

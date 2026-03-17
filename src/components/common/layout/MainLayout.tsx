@@ -11,12 +11,12 @@ const MainLayout = () => {
             <ul className="flex space-x-6 text-sm font-medium">
               <li>
                 <Link to={AppRoutes.HOME} className="hover:text-blue-500 transition-colors">
-                  Users
+                  Usuarios
                 </Link>
               </li>
               <li>
                 <Link to={AppRoutes.CREATE_USER} className="hover:text-blue-500 transition-colors">
-                  Add New
+                  Agregar usuario
                 </Link>
               </li>
             </ul>
