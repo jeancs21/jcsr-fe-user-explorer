@@ -41,10 +41,10 @@ const UserDetail = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
-          { label: "Email", value: user.email },
-          { label: "Phone", value: user.phone },
-          { label: "Company", value: user.company },
-          { label: "City", value: user.city },
+          { label: "Correo electrónico", value: user.email },
+          { label: "Teléfono", value: user.phone },
+          { label: "Empresa", value: user.company },
+          { label: "Ciudad", value: user.city },
         ].map((field) => (
           <UserInfoField
             key={field.label}
