@@ -5,6 +5,8 @@ import UserInfoField from "./UserInfoField";
 import UserActions from "./UserActions";
 import { useGetUsers } from "../hooks";
 import { AppRoutes } from "../../../router/routes.enum";
+import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
 
 const TABLE_HEADERS = [
   { label: "Usuario", className: "" },
@@ -29,17 +31,13 @@ const UserList = ({ search, city, company }: UserListProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <LoadingSpinner />
     );
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
-        <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
-      </div>
+      <ErrorMessage error={error} />
     );
   }
 
@@ -47,7 +45,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
     return (
       <div className="bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-10 text-center">
         <p className="text-zinc-500 dark:text-zinc-400">
-          {search ? `No users found matching "${search}".` : "No users found."}
+          {search ? `No se encontraron usuarios que coincidan con "${search}".` : "No se encuentran usuarios."}
         </p>
       </div>
     );
