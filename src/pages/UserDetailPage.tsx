@@ -4,6 +4,7 @@ import UserAvatar from "../components/ui/UserAvatar";
 import UserInfoField from "../features/user/components/UserInfoField";
 import GoBackLink from "../components/ui/GoBackLink";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 const UserDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,9 +19,9 @@ const UserDetailPage = () => {
 
   if (error || !user) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
-        <p className="text-red-600 dark:text-red-400 font-medium mb-6">{error || "User not found"}</p>
-        <GoBackLink>Volver al listado</GoBackLink>
+      <div className="flex flex-col justify-center items-center gap-6">
+        <ErrorMessage error={error || "User not found"} />
+        <GoBackLink className="w-64">Volver al listado</GoBackLink>
       </div>
     );
   }

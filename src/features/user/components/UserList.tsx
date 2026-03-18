@@ -6,6 +6,7 @@ import UserActions from "./UserActions";
 import { useGetUsers } from "../hooks";
 import { AppRoutes } from "../../../router/routes.enum";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
 
 const TABLE_HEADERS = [
   { label: "Usuario", className: "" },
@@ -36,9 +37,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
 
   if (error) {
     return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
-        <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
-      </div>
+      <ErrorMessage error={error} />
     );
   }
 
