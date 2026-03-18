@@ -1,23 +1,31 @@
 import { createBrowserRouter } from "react-router-dom";
 import UserListPage from "../pages/UserListPage";
 import CreateUserPage from "../pages/CreateUserPage";
-import EditUserPage from "../pages/EditUserPage";
+import UserDetailPage from "../pages/UserDetailPage";
+import NotFoundPage from "../pages/NotFoundPage";
+import MainLayout from "../components/common/layout/MainLayout";
+import { AppRoutes } from "./routes.enum";
 
 export const router = createBrowserRouter([
     {
-        path:"/",
+        path: AppRoutes.HOME,
+        element: <MainLayout />,
         children: [
             {
                 path: "",
                 element: <UserListPage />
             },
             {
-                path: "create-user",
+                path: AppRoutes.USER_DETAILS.replace("/", ""),
+                element: <UserDetailPage />
+            },
+            {
+                path: AppRoutes.CREATE_USER.replace("/", ""),
                 element: <CreateUserPage />
             },
             {
-                path: "edit-user/:id",
-                element: <EditUserPage />
+                path: AppRoutes.NOT_FOUND,
+                element: <NotFoundPage />
             }
         ]
     }
