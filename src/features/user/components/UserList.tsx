@@ -5,6 +5,7 @@ import UserInfoField from "./UserInfoField";
 import UserActions from "./UserActions";
 import { useGetUsers } from "../hooks";
 import { AppRoutes } from "../../../router/routes.enum";
+import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 
 const TABLE_HEADERS = [
   { label: "Usuario", className: "" },
@@ -29,9 +30,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
+      <LoadingSpinner />
     );
   }
 
