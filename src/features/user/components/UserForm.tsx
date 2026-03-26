@@ -6,19 +6,26 @@ import TextField from '../../../components/ui/inputs/TextField';
 import SearchableSelect from '../../../components/ui/inputs/SearchableSelect';
 import Button from '../../../components/ui/Button';
 import { userFormSchema } from '../schemas/userFormSchema';
-import type { CreateUser } from '../interface/user.interface';
-import { useCreateUser } from '../hooks';
+import type { CreateUser, User } from '../interface/user.interface';
+import { useCreateUser, useUpdateUser } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '../../../router/routes.enum';
 import { DR_CITY_OPTIONS } from '../constants/drCities';
 
 interface UserFormProps {
   submitLabel?: string;
+  initialData?: User | null;
+  userId?: number;
 }
 
-const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
-  const { handleCreateUser, isSubmitting, success } = useCreateUser();
+const UserForm = ({ submitLabel = 'Guardar', initialData, userId }: UserFormProps) => {
+  const { handleCreateUser, isSubmitting: isCreating, success: successCreate } = useCreateUser();
+  const { handleUpdateUser, isSubmitting: isUpdating, success: successUpdate } = useUpdateUser();
   const navigate = useNavigate();
+
+  const isEditing = !!userId;
+  const isSubmitting = isCreating || isUpdating;
+  const success = successCreate || successUpdate;
 
   const {
     register,
@@ -38,6 +45,18 @@ const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
   });
 
   useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        email: initialData.email,
+        phone: initialData.phone,
+        company: initialData.company,
+        city: initialData.city,
+      });
+    }
+  }, [initialData, reset]);
+
+  useEffect(() => {
     if (success) {
       reset();
       const timer = setTimeout(() => {
@@ -48,7 +67,11 @@ const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
   }, [success, reset, navigate]);
 
   const onFormSubmit: SubmitHandler<CreateUser> = async (data) => {
-    await handleCreateUser(data);
+    if (isEditing && userId) {
+      await handleUpdateUser(userId, data);
+    } else {
+      await handleCreateUser(data);
+    }
   };
 
 
@@ -76,7 +99,7 @@ const UserForm = ({ submitLabel = 'Guardar' }: UserFormProps) => {
 
       <TextField
         label="Teléfono"
-        placeholder="Ej. 809-555-0101"
+        placeholder="Ej. 8095550101"
         {...register('phone')}
         error={errors.phone?.message}
         disabled={isSubmitting}
