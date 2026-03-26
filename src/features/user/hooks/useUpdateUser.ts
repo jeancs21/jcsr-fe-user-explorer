@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import type { User } from "../interface/user.interface";
+import { updateUser } from "../services/user.services";
+import type { UpdateUser } from "../interface/user.interface";
 
 export const useUpdateUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleUpdateUser = async (id: number, userData: Omit<User, 'id'>) => {
+  const handleUpdateUser = async (id: number, userData: Omit<UpdateUser, 'id'>) => {
     setIsSubmitting(true);
     setError(null);
     setSuccess(false);
     try {
-      console.log(`Updating user ${id} with data:`, userData);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await updateUser({ id, ...userData });
       setSuccess(true);
-      toast.success("¡Usuario actualizado exitosamente!");
+      toast.success("Usuario actualizado exitosamente!");
       return true;
     } catch (err) {
       const errorMessage = "Error al actualizar el usuario. Por favor verifica los datos.";
