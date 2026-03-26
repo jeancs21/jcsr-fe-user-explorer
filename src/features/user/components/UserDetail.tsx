@@ -1,15 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useGetUserById } from "../hooks";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import ErrorMessage from "../../../components/ui/ErrorMessage";
 import GoBackLink from "../../../components/ui/GoBackLink";
 import UserAvatar from "../../../components/ui/UserAvatar";
 import UserInfoField from "./UserInfoField";
+import { AppRoutes } from "../../../router/routes.enum";
 
 const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
   const userId = id ? parseInt(id) : null;
   const { user, isLoading, error } = useGetUserById(userId);
+  
+  const editUrl = AppRoutes.EDIT_USER.replace(":id", id || "");
+
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -24,6 +28,7 @@ const UserDetail = () => {
     );
   }
 
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-6">
@@ -36,7 +41,15 @@ const UserDetail = () => {
             </p>
           </div>
         </div>
-        <GoBackLink>Volver al listado</GoBackLink>
+        <div className="flex items-center gap-6">
+          <GoBackLink>Volver al listado</GoBackLink>
+          <Link
+            to={editUrl}
+            className="flex-1 flex items-center justify-center px-6 py-3 text-white bg-amber-700 hover:bg-amber-800 rounded-lg text-base font-medium transition-colors shadow-lg shadow-amber-500/20"
+          >
+            Editar
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
