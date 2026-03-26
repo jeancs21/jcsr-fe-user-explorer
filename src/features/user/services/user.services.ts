@@ -23,3 +23,7 @@ export const updateUser = async (user: UpdateUser): Promise<User> => {
     const { data } = await usersApi.patch<User>(`/users/${id}`, userData);
     return data;
 };
+
+export const deleteUser = async (id: number): Promise<void> => {
+    await usersApi.delete(`/users/${id}`);
+};
