@@ -29,6 +29,10 @@ const UserList = ({ search, city, company }: UserListProps) => {
     navigate(AppRoutes.USER_DETAILS.replace(":id", user.id.toString()));
   };
 
+  const handleDeleteClick = (user: User) => {
+    console.log("Delete user:", user);
+  };
+
   if (isLoading) {
     return (
       <LoadingSpinner />
@@ -85,6 +89,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
                   <UserActions
                     user={user}
                     onShowDetails={handleShowDetails}
+                    onDelete={handleDeleteClick}
                   />
                 </td>
               </tr>
@@ -110,6 +115,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
             <UserActions
               user={user}
               onShowDetails={handleShowDetails}
+              onDelete={handleDeleteClick}
               isMobile
             />
           </div>
