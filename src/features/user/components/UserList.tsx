@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { User } from "../interface/user.interface";
 import UserAvatar from "../../../components/ui/UserAvatar";
@@ -7,6 +8,7 @@ import { useGetUsers } from "../hooks";
 import { AppRoutes } from "../../../router/routes.enum";
 import LoadingSpinner from "../../../components/ui/LoadingSpinner";
 import ErrorMessage from "../../../components/ui/ErrorMessage";
+import DeleteUserModal from "./DeleteUserModal";
 
 const TABLE_HEADERS = [
   { label: "Usuario", className: "" },
@@ -22,11 +24,22 @@ interface UserListProps {
 }
 
 const UserList = ({ search, city, company }: UserListProps) => {
-  const { users, isLoading, error } = useGetUsers(search, city, company);
+  const { users, isLoading, error, refetch } = useGetUsers(search, city, company);
   const navigate = useNavigate();
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleShowDetails = (user: User) => {
     navigate(AppRoutes.USER_DETAILS.replace(":id", user.id.toString()));
+  };
+
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleted = () => {
+    refetch();
   };
 
   if (isLoading) {
@@ -85,6 +98,7 @@ const UserList = ({ search, city, company }: UserListProps) => {
                   <UserActions
                     user={user}
                     onShowDetails={handleShowDetails}
+                    onDelete={handleDeleteClick}
                   />
                 </td>
               </tr>
@@ -110,11 +124,19 @@ const UserList = ({ search, city, company }: UserListProps) => {
             <UserActions
               user={user}
               onShowDetails={handleShowDetails}
+              onDelete={handleDeleteClick}
               isMobile
             />
           </div>
         ))}
       </div>
+
+      <DeleteUserModal
+        user={userToDelete}
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDeleted={handleDeleted}
+      />
     </>
   );
 };
